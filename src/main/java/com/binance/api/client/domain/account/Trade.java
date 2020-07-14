@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Represents an executed trade.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Trade {
+public class Trade implements Comparable<Trade>{
 
   /**
    * Trade id.
@@ -184,5 +184,11 @@ public class Trade {
         .append("bestMatch", bestMatch)
         .append("orderId", orderId)
         .toString();
+  }
+
+
+  @Override
+  public int compareTo(Trade trade) {
+    return Long.compare(trade.getTime(), this.time);
   }
 }

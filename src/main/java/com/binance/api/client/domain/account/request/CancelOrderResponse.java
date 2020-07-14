@@ -41,9 +41,16 @@ public class CancelOrderResponse {
     return this;
   }
 
+
   public String getStatus() {
     return status;
   }
+
+  public CancelOrderResponse setStatus(String status) {
+    this.status = status;
+    return this;
+  }
+
   public String getExecutedQty() {
     return executedQty;
   }
