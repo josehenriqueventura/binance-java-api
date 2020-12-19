@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Symbol information (base/quote).
@@ -30,6 +31,8 @@ public class SymbolInfo {
   private boolean icebergAllowed;
 
   private List<SymbolFilter> filters;
+
+  private List<PermissionType> permissions;
 
   public String getSymbol() {
     return symbol;
@@ -103,6 +106,14 @@ public class SymbolInfo {
     this.filters = filters;
   }
 
+  public List<PermissionType> getPermissions() {
+    return permissions;
+  }
+
+  public void setPermissions(List<PermissionType> permissions) {
+    this.permissions = permissions;
+  }
+
   /**
    * @param filterType filter type to filter for.
    * @return symbol filter information for the provided filter type.
@@ -112,6 +123,10 @@ public class SymbolInfo {
         .filter(symbolFilter -> symbolFilter.getFilterType() == filterType)
         .findFirst()
         .get();
+  }
+
+  public boolean isPermittedToTradeInSpot() {
+    return permissions != null && permissions.get(0) == PermissionType.SPOT;
   }
 
   @Override
@@ -126,6 +141,20 @@ public class SymbolInfo {
         .append("orderTypes", orderTypes)
         .append("icebergAllowed", icebergAllowed)
         .append("filters", filters)
+        .append("permissions", permissions)
         .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SymbolInfo that = (SymbolInfo) o;
+    return Objects.equals(symbol, that.symbol) && status == that.status;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(symbol, status);
   }
 }
